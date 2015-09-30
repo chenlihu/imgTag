@@ -1,3 +1,6 @@
-/**
- * Created by chenlihu on 2015/9/30.
- */
+angular.module("console.imgTag").controller("indexController",['$scope',function($scope){
+
+
+
+}]);
+
