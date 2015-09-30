@@ -1,0 +1,14 @@
+/uploaded_images
+bower_components
+obj
+.sass-cache
+/console-operation.njsproj
+/console-publisher.njsproj
+/.ntvs_analysis.dat.tmp
+/console-publisher.v12.suo
+node_modules
+/.ntvs_analysis.dat
+.idea
+/*.un~
+/*.js~
+*.json~
