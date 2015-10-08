@@ -62,12 +62,12 @@ module.exports = function (grunt) {
         },
         concat: {
             options: {
-                separator: ';',
+                separator: ';'
             },
             dist: {
                 src: ["client/app/controllers/**/*.js", "client/app/services/*.js", "client/app/filters/*.js"],
-                dest: 'client/build/controllers.js',
-            },
+                dest: 'client/build/controllers.js'
+            }
         },
         copy: {
             main: {

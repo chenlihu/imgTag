@@ -1,18 +1,77 @@
-<div class="container">
-     <div class="header">
-         <ul>
-             <li>
-                 <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg">
-             </li>
-             <li></li>
-             <li></li>
-             <li></li>
-             <li></li>
-             <li></li>
-             <li></li>
-             <li></li>
-             <li></li>
-             <li></li>
-         </ul>
-     </div>
+﻿﻿
+<div class="container" ng-controller="indexController">
+    <div class="header">
+        <ul>
+            <li>
+                <a> <img src="http://img2.mingxing.com/upload/thumb/2015/03/31-0-Kf6Mvz.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img2.mingxing.com/upload/thumb/2015/03/31-0-Kf6Mvz.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+            <li>
+                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="search">
+        <input type="text" class="form-control" ng-model="imgUrl">
+        <input type="button" class="btn btn-primary" value="上传文件">
+    </div>
+    <div class="content">
+       <a ng-click="loading()"><img ng-src="{{validImgUrl}}"></a>
+    </div>
+</div>
+<div class="bg"></div>
+<div class="result">
+    <div class="result-content">
+        <div>
+            <div class="close"></div>
+        </div>
+        <div class="loading">
+            <div class="ball"></div>
+            <div class="ball1"></div>
+        </div>
+    </div>
 </div>

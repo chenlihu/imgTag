@@ -63,11 +63,294 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: block;
 }
 
-/* line 3, ../sass/index.scss */
+/* line 5, ../sass/index.scss */
+body {
+  background: #fbf8f4 url(http://css3lib.alloyteam.com/uilib/animation/CSS3TimedNotifications/images/bg.jpg) repeat;
+}
+
+/* line 9, ../sass/index.scss */
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  margin-left: 20px;
+}
+
+/* line 31, ../sass/index.scss */
+.btn-primary {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+
+/* line 37, ../sass/index.scss */
+.search {
+  text-align: center;
+}
+
+/* line 40, ../sass/index.scss */
+.form-control {
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  width: 600px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* line 59, ../sass/index.scss */
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/* line 66, ../sass/index.scss */
 .container {
-  width: 960px;
   margin-left: auto;
   margin-right: auto;
-  background-color: #ccc;
-  height: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* line 74, ../sass/index.scss */
+.header ul {
+  height: 180px;
+  overflow: hidden;
+  text-align: center;
+}
+/* line 78, ../sass/index.scss */
+.header ul li {
+  display: inline-block;
+  margin: 5px;
+  position: relative;
+}
+/* line 83, ../sass/index.scss */
+.header ul li a {
+  cursor: pointer;
+  width: 140px;
+  height: 150px;
+  display: block;
+  padding: 10px;
+  background: #fff;
+  -moz-box-shadow: 1px 1px 2px #fff, 1px 1px 2px rgba(158, 111, 86, 0.3) inset;
+  -webkit-box-shadow: 1px 1px 2px #fff, 1px 1px 2px rgba(158, 111, 86, 0.3) inset;
+  box-shadow: 1px 1px 2px #fff, 1px 1px 2px rgba(158, 111, 86, 0.3) inset;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+}
+/* line 93, ../sass/index.scss */
+.header ul li a:hover span {
+  opacity: 1;
+  filter: alpha(opacity=99);
+  /* internet explorer */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=99)";
+  /*IE8*/
+}
+/* line 100, ../sass/index.scss */
+.header ul li a span {
+  position: absolute;
+  width: 140px;
+  height: 150px;
+  top: 10px;
+  left: 10px;
+  text-align: center;
+  line-height: 150px;
+  font-weight: normal;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  /* internet explorer */
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
+  /*IE8*/
+  background: rgba(75, 75, 75, 0.7);
+  -webkit-transition: opacity 0.3s linear;
+  -moz-transition: opacity 0.3s linear;
+  -o-transition: opacity 0.3s linear;
+  -ms-transition: opacity 0.3s linear;
+  transition: opacity 0.3s linear;
+}
+/* line 123, ../sass/index.scss */
+.header ul li a img {
+  width: 140px;
+  height: 150px;
+  display: block;
+  border: 0;
+  text-align: center;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+}
+
+/* line 137, ../sass/index.scss */
+.content {
+  padding: 20px;
+  text-align: center;
+}
+/* line 140, ../sass/index.scss */
+.content a {
+  padding: 10px;
+  background: #fff;
+  display: inline-block;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+}
+/* line 145, ../sass/index.scss */
+.content a img {
+  cursor: pointer;
+  max-width: 1024px;
+  -moz-border-radius: 4px / 4px;
+  -webkit-border-radius: 4px 4px;
+  border-radius: 4px / 4px;
+}
+
+/* line 153, ../sass/index.scss */
+.bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #3a6682;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  display: none;
+}
+
+/* line 166, ../sass/index.scss */
+.result {
+  display: none;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+/* line 173, ../sass/index.scss */
+.result .result-content {
+  -moz-border-radius: 4px 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px 4px;
+  text-align: center;
+  padding: 10px;
+  width: 60%;
+  height: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  background-color: #fff;
+  box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+}
+/* line 185, ../sass/index.scss */
+.result .result-content .close {
+  background: url(../images/close.png) no-repeat;
+  cursor: pointer;
+  float: right;
+  height: 48px;
+  width: 48px;
+  margin-right: -10px;
+  margin-top: -10px;
+}
+
+/* line 197, ../sass/index.scss */
+.ball {
+  background-color: transparent;
+  border: 5px solid rgba(0, 183, 229, 0.9);
+  opacity: .9;
+  border-top: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-radius: 50px;
+  box-shadow: 0 0 35px #2187e7;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  -moz-animation: spin 0.5s infinite linear;
+  -webkit-animation: spin 0.5s infinite linear;
+  animation: spin 0.5s infinite linear;
+}
+
+/* line 211, ../sass/index.scss */
+.ball1 {
+  background-color: transparent;
+  border: 5px solid rgba(0, 183, 229, 0.9);
+  opacity: .9;
+  border-top: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-radius: 50px;
+  box-shadow: 0 0 15px #2187e7;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  position: relative;
+  top: -80px;
+  -moz-animation: spinoff 0.5s infinite linear;
+  -webkit-animation: spinoff 0.5s infinite linear;
+  animation: spinoff 0.5s infinite linear;
+}
+
+/* line 227, ../sass/index.scss */
+.loading {
+  margin-top: 300px;
+}
+
+@keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinoff {
+  0% {
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
