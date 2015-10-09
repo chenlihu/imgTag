@@ -2,56 +2,8 @@
 <div class="container" ng-controller="indexController">
     <div class="header">
         <ul>
-            <li>
-                <a> <img src="http://img2.mingxing.com/upload/thumb/2015/03/31-0-Kf6Mvz.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img2.mingxing.com/upload/thumb/2015/03/31-0-Kf6Mvz.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
-            </li>
-            <li>
-                <a> <img src="http://img.mingxing.com/upload/attach/2014/09-25/280145-rpjPgh.jpg"> <span>范冰冰</span></a>
+            <li ng-repeat="item in album" ng-click="showImg(item)">
+                <a> <img ng-src="{{item}}"> <span></span></a>
             </li>
         </ul>
     </div>
@@ -60,18 +12,17 @@
         <input type="button" class="btn btn-primary" value="上传文件">
     </div>
     <div class="content">
-       <a ng-click="loading()"><img ng-src="{{validImgUrl}}"></a>
-    </div>
-</div>
-<div class="bg"></div>
-<div class="result">
-    <div class="result-content">
-        <div>
-            <div class="close"></div>
+        <div class="img" ng-style="{'left':validImgLeft}">
+            <a ng-click="getTags(validImgUrl)"><img ng-src="{{validImgUrl}}"></a>
+            <div class="loading" ng-style="{'display':loading.display,'left':loading.left,'top':loading.top}">
+                <div class="ball"></div>
+                <div class="ball1"></div>
+            </div>
         </div>
-        <div class="loading">
-            <div class="ball"></div>
-            <div class="ball1"></div>
+        <div class="result" ng-style="{'left':resultLeft,'display':showResult}">
+            <div class="progress-bar" ng-repeat="item in result">
+                <span class="label">{{item.name}}</span><span class="progress" ng-style="{'width':280*item.percentage}">&nbsp;</span>
+            </div>
         </div>
     </div>
 </div>
