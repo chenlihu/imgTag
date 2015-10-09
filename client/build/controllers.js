@@ -105,8 +105,17 @@ angular.module("console.imgTag").service("tagService",['$http',function($http){
         var promise = $http.get(serviceUrl, paramData).then(function (response) {
 
             if (response.data.tags && angular.isArray(response.data.tags)) {
+
+
                 var tagdata = [],
                     confidencescale = 1.0;
+
+
+                if(response.data.tags.length==0){
+                    tagdata.push({ name:"无结果",percentage: 0 });
+                    return tagdata;
+
+                }
 
                 for (i = 0; i < response.data.tags.length; i++) {
                     var tag = response.data.tags[i];
