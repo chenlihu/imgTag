@@ -31,14 +31,15 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
     $scope.upload = function (file) {
         if(!file) return;
         console.log('上传文件', file);
-        //uploadService.upload({
-        //    url: '/api/1.1/creatives/material',
-        //    file: file
-        //}).success(function (data, status, headers, config) {
-        //
-        //}).error(function (data, status, headers, config) {
-        //    console.log('error status: ', status);
-        //});
+
+        uploadService.upload({
+            url: 'http://localhost:18360/UploadHandler.ashx',
+            file: file
+        }).success(function (data, status, headers, config) {
+
+        }).error(function (data, status, headers, config) {
+            console.log('error status: ', status);
+        });
 
         uploadService.imageDimensions(file).then(function (dimensions) {
 
