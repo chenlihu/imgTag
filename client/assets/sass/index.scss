@@ -72,20 +72,20 @@ body{
 
 .header{
   ul{
-    height:180px;
+    height:110px;
     overflow:hidden;
     text-align: center;
     li {
       display: inline-block;
-      margin:5px;
+      margin:2px;
       position:relative;
 
       a{
         cursor:pointer;
-        width: 140px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         display:block;
-        padding: 10px;
+        padding: 5px;
         background: #fff;
         @include box-shadow(1px 1px 2px #fff,1px 1px 2px rgba(158,111,86,0.3) inset);
         @include border-radius(4px, 4px);
@@ -99,10 +99,10 @@ body{
 
         span{
           position: absolute;
-          width: 140px;
-          height: 150px;
-          top: 10px;
-          left: 10px;
+          width: 100px;
+          height: 100px;
+          top: 5px;
+          left: 5px;
           text-align: center;
           line-height: 150px;
           font-weight: normal;
@@ -121,8 +121,8 @@ body{
         }
 
         img{
-          width:140px;
-          height:150px;
+          width:100px;
+          height:100px;
           display:block;
           border:0;
           text-align: center;
@@ -164,6 +164,15 @@ body{
     }
   }
 }
+
+.result.ng-enter {
+  transition:1s linear all;
+  opacity:0;
+}
+.result.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
 
 .ball {
   background-color: rgba(0,0,0,0);
@@ -230,6 +239,7 @@ body{
     display:inline-block;
     height:50px;
     background-color: #a5df41;
+    @include border-radius(8px);
   }
   .label{
     display:inline-block;

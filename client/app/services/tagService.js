@@ -1,5 +1,5 @@
 
-angular.module("console.imgTag").service("tagService",['$http',function($http){
+angular.module("console.imgTag").service("tagService",['$http','$q',function($http,$q){
 
     this.getAlbum=function(){
         return $http.get("/client/app/data/urls.json").then(function(response){
@@ -8,8 +8,11 @@ angular.module("console.imgTag").service("tagService",['$http',function($http){
     };
 
     this.getTags = function (imgUrl) {
+        var defer=$q.defer();
         var serviceUrl = 'http://tagdemo.cogtuapi.com:5000/classify_url_opt_j',
             paramData = {
+                timeout:defer.promise,
+                defer:defer,
                 params: {
                     imageurl: imgUrl
                 }

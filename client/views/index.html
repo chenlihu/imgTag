@@ -9,17 +9,17 @@
     </div>
     <div class="search">
         <input type="text" class="form-control" ng-model="imgUrl">
-        <input type="button" class="btn btn-primary" value="上传文件">
+        <input type="button" class="btn btn-primary" ngf-select="upload(file)" ng-model="file" value="上传文件">
     </div>
     <div class="content">
         <div class="img" ng-style="{'left':validImgLeft}">
-            <a ng-click="getTags(validImgUrl)"><img ng-src="{{validImgUrl}}"></a>
+            <a><img ng-src="{{validImgUrl}}"></a>
             <div class="loading" ng-style="{'display':loading.display,'left':loading.left,'top':loading.top}">
                 <div class="ball"></div>
                 <div class="ball1"></div>
             </div>
         </div>
-        <div class="result" ng-style="{'left':resultLeft,'display':showResult}">
+        <div class="result" ng-if="showResult" ng-style="{'left':resultLeft}">
             <div class="progress-bar" ng-repeat="item in result">
                 <span class="label">{{item.name}}</span><span class="progress" ng-style="{'width':280*item.percentage}">&nbsp;</span>
             </div>

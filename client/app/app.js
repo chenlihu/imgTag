@@ -1,1 +1,1 @@
-﻿angular.module('console.imgTag', ['ui.router', 'ngFileUpload']);
+﻿angular.module('console.imgTag', ['ui.router', 'ngFileUpload','ngAnimate']);
