@@ -115,7 +115,7 @@ angular.module("console.imgTag").controller("indexController", ['$q','$http','$s
     }
 
     /**
-     * 终止挂起的分析请求
+     * 帮助函数，终止挂起的分析请求
      */
     function abortPendingRequest(){
         var pendingRequests=$http.pendingRequests;
