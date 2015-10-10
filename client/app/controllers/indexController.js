@@ -1,21 +1,21 @@
-angular.module("console.imgTag").controller("indexController", ['$q','$http','$scope', 'tagService','$interval','Upload', function ($q,$http,$scope, tagService,$interval,uploadService) {
-    $scope.showResult =false;
+angular.module("console.imgTag").controller("indexController", ['$q', '$http', '$scope', 'tagService', '$interval', 'Upload', function ($q, $http, $scope, tagService, $interval, uploadService) {
+    $scope.showResult = false;
 
-    $scope.loading={
-        display:'none'
+    $scope.loading = {
+        display: 'none'
     };
 
     var curImgWidth;
     var curImgHeight;
     $scope.$watch('imgUrl', function (newValue) {
         var img;
-        if (newValue) {
+        if (newValue && newValue.indexOf('blob') == -1) {
             img = new Image;
             img.onload = function (info) {
                 console.log(info);
-                $scope.showResult =false;
-                curImgHeight =getWH(info.target.width,info.target.height).height;
-                curImgWidth = getWH(info.target.width,info.target.height).width;
+                $scope.showResult = false;
+                curImgHeight = getWH(info.target.width, info.target.height).height;
+                curImgWidth = getWH(info.target.width, info.target.height).width;
                 $scope.$apply(function () {
                     $scope.validImgUrl = newValue;
                     $scope.validImgLeft = (1024 - curImgWidth) / 2;
@@ -28,8 +28,9 @@ angular.module("console.imgTag").controller("indexController", ['$q','$http','$s
         }
     });
 
-    $scope.upload= function (file) {
-        console.log('上传文件',file);
+    $scope.upload = function (file) {
+        if(!file) return;
+        console.log('上传文件', file);
         //uploadService.upload({
         //    url: '/api/1.1/creatives/material',
         //    file: file
@@ -40,7 +41,21 @@ angular.module("console.imgTag").controller("indexController", ['$q','$http','$s
         //});
 
         uploadService.imageDimensions(file).then(function (dimensions) {
-            console.log(dimensions);
+
+            curImgHeight = getWH(dimensions.width, dimensions.height).height;
+            curImgWidth = getWH(dimensions.width, dimensions.height).width;
+
+
+            $scope.showResult = false;
+            $scope.loading.display = "none";
+            $scope.imgUrl = file.blobUrl;
+            $scope.validImgUrl = file.blobUrl;
+            $scope.validImgLeft = (1024 - curImgWidth) / 2;
+            $scope.loading.left = (curImgWidth - 80) / 2;
+            $scope.loading.top = (curImgHeight - 80) / 2;
+            $scope.loading.display = "block";
+
+            abortPendingRequest();
         });
     };
 
@@ -64,26 +79,26 @@ angular.module("console.imgTag").controller("indexController", ['$q','$http','$s
      * @param item
      */
     function getTags(item) {
-        $scope.loading.left=(curImgWidth-80)/2;
-        $scope.loading.top=(curImgHeight-80)/2;
-        $scope.loading.display="block";
+        $scope.loading.left = (curImgWidth - 80) / 2;
+        $scope.loading.top = (curImgHeight - 80) / 2;
+        $scope.loading.display = "block";
         tagService.getTags(item).then(function (result) {
             console.log('resolved');
-            $scope.loading.display="none";
-            var targetImgLeft=(1024 - curImgWidth) / 2 - 200;
-            var animate=$interval(function(){
-                if($scope.validImgLeft>targetImgLeft){
-                    $scope.validImgLeft-=10;
+            $scope.loading.display = "none";
+            var targetImgLeft = (1024 - curImgWidth) / 2 - 200;
+            var animate = $interval(function () {
+                if ($scope.validImgLeft > targetImgLeft) {
+                    $scope.validImgLeft -= 10;
 
-                }else{
-                    $scope.validImgLeft=targetImgLeft;
+                } else {
+                    $scope.validImgLeft = targetImgLeft;
                     $interval.cancel(animate);
                 }
-            },5)
+            }, 5)
 
             $scope.resultLeft = (1024 - curImgWidth) / 2 - 200 + curImgWidth;
             $scope.result = result;
-            $scope.showResult =true;
+            $scope.showResult = true;
         });
     };
     /**
@@ -107,7 +122,7 @@ angular.module("console.imgTag").controller("indexController", ['$q','$http','$s
             height = maxHeight;
 
         }
-        console.log(width,height);
+        console.log(width, height);
         return {
             width: width,
             height: height
@@ -117,12 +132,12 @@ angular.module("console.imgTag").controller("indexController", ['$q','$http','$s
     /**
      * 帮助函数，终止挂起的分析请求
      */
-    function abortPendingRequest(){
-        var pendingRequests=$http.pendingRequests;
-        for(var i=0;i<pendingRequests.length;i++){
-            var item=pendingRequests[i];
+    function abortPendingRequest() {
+        var pendingRequests = $http.pendingRequests;
+        for (var i = 0; i < pendingRequests.length; i++) {
+            var item = pendingRequests[i];
             console.log(item);
-            if(item.defer&&item.defer.resolve){
+            if (item.defer && item.defer.resolve) {
                 item.defer.resolve();
             }
         }
