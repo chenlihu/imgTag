@@ -29,7 +29,7 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
     });
 
     $scope.upload = function (file) {
-        if(!file) return;
+        if (!file) return;
         console.log('上传文件', file);
 
         uploadService.imageDimensions(file).then(function (dimensions) {
@@ -49,10 +49,20 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
 
             abortPendingRequest();
 
+            //测试 修改图片大小后上传
+            //changeSize(file).then(function (data) {
+            //    data.name=file.name;
+            //    console.log(data);
+            //    uploadService.upload({
+            //        url: 'http://localhost:9001/api/1.1/creatives/material',
+            //        method: 'POST',
+            //        file: data
+            //    });
+            //});
 
             uploadService.upload({
                 url: 'http://localhost:9001/api/1.1/creatives/material',
-                method:'POST',
+                method: 'POST',
                 file: file
             }).success(function (data, status, headers, config) {
 
@@ -64,8 +74,8 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
                         confidencescale = 1.0;
 
 
-                    if(data.tags.length==0){
-                        tagdata.push({ name:"无结果",percentage: 0 });
+                    if (data.tags.length == 0) {
+                        tagdata.push({name: "无结果", percentage: 0});
                         return tagdata;
 
                     }
@@ -77,13 +87,16 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
                     }
                     for (i = 0; i < data.tags.length; i++) {
                         var tag = data.tags[i];
-                        tagdata.push({ name: tag.prediction, value: tag.confidence, percentage: tag.confidence / confidencescale });
+                        tagdata.push({
+                            name: tag.prediction,
+                            value: tag.confidence,
+                            percentage: tag.confidence / confidencescale
+                        });
                     }
 
-                    result=tagdata;
+                    result = tagdata;
 
                 }
-
 
 
                 console.log('resolved');
@@ -194,6 +207,42 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
             }
         }
     }
+
+    /**
+     * 帮助函数，修改图片大小
+     * @param file
+     * @returns {*}
+     */
+    function changeSize(file) {
+        var defer = $q.defer();
+        var MAX_HEIGHT = 100;
+        var image = new Image();
+        image.onload = function () {
+            var canvas = document.createElement('canvas');
+            if (image.height > MAX_HEIGHT) {
+                image.width *= MAX_HEIGHT / image.height;
+                image.height = MAX_HEIGHT;
+            }
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0, image.width, image.height);
+            defer.resolve(dataURLtoBlob(canvas.toDataURL(file.type)));
+        };
+        image.src = file.blobUrl;
+        return defer.promise;
+
+        function dataURLtoBlob(dataurl) {
+            var arr = dataurl.split(','),mime = arr[0].match(/:(.*?);/)[1],bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while(n--){
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {type:mime});
+        }
+    }
+
+
 }]);
 
 ;
