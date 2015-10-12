@@ -32,15 +32,6 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
         if(!file) return;
         console.log('上传文件', file);
 
-        uploadService.upload({
-            url: 'http://localhost:18360/UploadHandler.ashx',
-            file: file
-        }).success(function (data, status, headers, config) {
-
-        }).error(function (data, status, headers, config) {
-            console.log('error status: ', status);
-        });
-
         uploadService.imageDimensions(file).then(function (dimensions) {
 
             curImgHeight = getWH(dimensions.width, dimensions.height).height;
@@ -57,6 +48,66 @@ angular.module("console.imgTag").controller("indexController", ['$q', '$http', '
             $scope.loading.display = "block";
 
             abortPendingRequest();
+
+
+            uploadService.upload({
+                url: 'http://localhost:9001/api/1.1/creatives/material',
+                method:'POST',
+                file: file
+            }).success(function (data, status, headers, config) {
+
+                var result;
+                if (data.tags && angular.isArray(data.tags)) {
+
+
+                    var tagdata = [],
+                        confidencescale = 1.0;
+
+
+                    if(data.tags.length==0){
+                        tagdata.push({ name:"无结果",percentage: 0 });
+                        return tagdata;
+
+                    }
+
+                    for (i = 0; i < data.tags.length; i++) {
+                        var tag = data.tags[i];
+                        if (tag.confidence > confidencescale)
+                            confidencescale = tag.confidence
+                    }
+                    for (i = 0; i < data.tags.length; i++) {
+                        var tag = data.tags[i];
+                        tagdata.push({ name: tag.prediction, value: tag.confidence, percentage: tag.confidence / confidencescale });
+                    }
+
+                    result=tagdata;
+
+                }
+
+
+
+                console.log('resolved');
+                $scope.loading.display = "none";
+                var targetImgLeft = (1024 - curImgWidth) / 2 - 200;
+                var animate = $interval(function () {
+                    if ($scope.validImgLeft > targetImgLeft) {
+                        $scope.validImgLeft -= 10;
+
+                    } else {
+                        $scope.validImgLeft = targetImgLeft;
+                        $interval.cancel(animate);
+                    }
+                }, 5)
+
+                $scope.resultLeft = (1024 - curImgWidth) / 2 - 200 + curImgWidth;
+                $scope.result = result;
+                $scope.showResult = true;
+
+            }).error(function (data, status, headers, config) {
+                console.log('error status: ', status);
+            });
+
+
         });
     };
 
