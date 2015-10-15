@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>图像识别</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.7/css/swiper.min.css">
+    <link rel="stylesheet" href="/client/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/client/assets/css/mobile.css"/>
+    <script src="/client/assets/js/jquery.min.js"></script>
+</head>
+<body ng-app="console.imgTag">
+
+<div class="container-fluid" ng-controller="mobileController">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" swipe ng-repeat="item in album"><img ng-click="showTags(item)"
+                                                                           style="width:100px; height:100px;"
+                                                                           ng-src="{{item}}"></div>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom:30px;">
+        <div class="col-md-8 col-sm-8 col-xs-8"><input type="text" ng-model="imgUrl" class="form-control"></div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+            <input type="button" class="btn btn-primary" ngf-select="upload(file)" ng-model="file" value="上传文件">
+        </div>
+    </div>
+
+
+    <div ng-if="showResult" class="row" ng-repeat="item in result">
+        <div class="col-md-2 col-sm-2 col-xs-2">
+            <span class="label" ng-bind="item.name"></span></div>
+        <div class="col-md-10 col-sm-10 col-xs-10">
+            <span class="progress" ng-style="{'width':item.percentage*100+'%'}"></span>
+        </div>
+    </div>
+
+    <div class="row" ng-show="loading">
+        <div class="col-md-4 col-sm-4 col-xs-4">
+
+        </div>
+        <div ng-bind="loadingText" class="col-md-4 col-sm-4 col-xs-4">
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+        </div>
+    </div>
+</div>
+
+
+<!-- Swiper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.1.7/js/swiper.min.js"></script>
+<script src="/client/assets/js/bootstrap.js"></script>
+
+<script src="/client/assets/js/angular.js"></script>
+<script src="/client/assets/js/ng-file-upload-shim.js"></script>
+<script src="/client/assets/js/ng-file-upload.js"></script>
+<script>
+    angular.module('console.imgTag', ['ngFileUpload']);
+    angular.module("console.imgTag").service("tagService", ['$http', '$q', function ($http, $q) {
+
+        this.getAlbum = function () {
+            return $http.get("/client/app/data/urls.json").then(function (response) {
+                return response.data.urls;
+            });
+        };
+
+        this.getTags = function (imgUrl) {
+            var defer = $q.defer();
+            var serviceUrl = 'http://tagdemo.cogtuapi.com:5000/classify_url_opt_j',
+                    paramData = {
+                        timeout: defer.promise,
+                        defer: defer,
+                        params: {
+                            imageurl: imgUrl
+                        }
+                    };
+            var promise = $http.get(serviceUrl, paramData).then(function (response) {
+
+                if (response.data.tags && angular.isArray(response.data.tags)) {
+
+
+                    var tagdata = [],
+                            confidencescale = 1.0;
+
+
+                    if (response.data.tags.length == 0) {
+                        tagdata.push({name: "无结果", percentage: 0});
+                        return tagdata;
+
+                    }
+
+                    for (i = 0; i < response.data.tags.length; i++) {
+                        var tag = response.data.tags[i];
+                        if (tag.confidence > confidencescale)
+                            confidencescale = tag.confidence
+                    }
+                    for (i = 0; i < response.data.tags.length; i++) {
+                        var tag = response.data.tags[i];
+                        tagdata.push({
+                            name: tag.prediction,
+                            value: tag.confidence,
+                            percentage: tag.confidence / confidencescale
+                        });
+                    }
+
+                    return tagdata;
+
+                }
+                else {
+                    return response.data;
+                }
+            });
+
+            return promise;
+        };
+    }]);
+    angular.module("console.imgTag").controller("mobileController", ['$q', '$http', '$scope', 'tagService', '$interval','Upload', function ($q, $http, $scope, tagService, $interval,uploadService) {
+        $scope.showResult = false;
+
+        $scope.loading = false;
+        $scope.loadingText="加载中...";
+
+        var curImgWidth;
+        var curImgHeight;
+        $scope.$watch('imgUrl', function (newValue) {
+            console.log(newValue);
+            var img;
+            if (newValue && newValue.indexOf('blob') == -1) {
+                img = new Image;
+                img.onload = function (info) {
+                    $scope.showResult = false;
+                    $scope.$apply(function () {
+                        abortPendingRequest();
+                        getTags(newValue);
+                    });
+                };
+                img.src = newValue;
+            }
+        });
+
+        $scope.upload = function (file) {
+            if (!file) return;
+            console.log('上传文件', file);
+
+            uploadService.imageDimensions(file).then(function (dimensions) {
+
+                curImgHeight = getWH(dimensions.width, dimensions.height).height;
+                curImgWidth = getWH(dimensions.width, dimensions.height).width;
+
+
+                $scope.showResult = false;
+                $scope.loading.display = "none";
+                $scope.imgUrl = file.blobUrl;
+                $scope.validImgUrl = file.blobUrl;
+                $scope.validImgLeft = (1024 - curImgWidth) / 2;
+                $scope.loading.left = (curImgWidth - 80) / 2;
+                $scope.loading.top = (curImgHeight - 80) / 2;
+                $scope.loading.display = "block";
+
+                abortPendingRequest();
+
+                //测试 修改图片大小后上传
+                //changeSize(file).then(function (data) {
+                //    data.name=file.name;
+                //    console.log(data);
+                //    uploadService.upload({
+                //        url: 'http://localhost:9001/api/1.1/creatives/material',
+                //        method: 'POST',
+                //        file: data
+                //    });
+                //});
+
+                uploadService.upload({
+                    url: 'http://172.20.187.1:9001/api/1.1/creatives/material',
+                    method: 'POST',
+                    file: file
+                }).success(function (data, status, headers, config) {
+
+                    var result;
+                    if (data.tags && angular.isArray(data.tags)) {
+
+
+                        var tagdata = [],
+                                confidencescale = 1.0;
+
+
+                        if (data.tags.length == 0) {
+                            tagdata.push({name: "无结果", percentage: 0});
+                            return tagdata;
+
+                        }
+
+                        for (i = 0; i < data.tags.length; i++) {
+                            var tag = data.tags[i];
+                            if (tag.confidence > confidencescale)
+                                confidencescale = tag.confidence
+                        }
+                        for (i = 0; i < data.tags.length; i++) {
+                            var tag = data.tags[i];
+                            tagdata.push({
+                                name: tag.prediction,
+                                value: tag.confidence,
+                                percentage: tag.confidence / confidencescale
+                            });
+                        }
+
+                        result = tagdata;
+
+                    }
+
+
+                    console.log('resolved');
+                    $scope.loading.display = "none";
+                    var targetImgLeft = (1024 - curImgWidth) / 2 - 200;
+                    var animate = $interval(function () {
+                        if ($scope.validImgLeft > targetImgLeft) {
+                            $scope.validImgLeft -= 10;
+
+                        } else {
+                            $scope.validImgLeft = targetImgLeft;
+                            $interval.cancel(animate);
+                        }
+                    }, 5)
+
+                    $scope.resultLeft = (1024 - curImgWidth) / 2 - 200 + curImgWidth;
+                    $scope.result = result;
+                    $scope.showResult = true;
+
+                }).error(function (data, status, headers, config) {
+                    console.log('error status: ', status);
+                });
+
+
+            });
+        };
+
+        /**
+         * 获取图集数据
+         */
+        tagService.getAlbum().then(function (data) {
+            $scope.album = data;
+        });
+
+
+
+        $scope.showTags = function (item) {
+           $scope.imgUrl=item;
+        };
+        /**
+         * 获取分析结果
+         * @param item
+         */
+        function getTags(item) {
+            $scope.loading=true;
+            $scope.showResult = false;
+            tagService.getTags(item).then(function (result) {
+                $scope.result = result;
+                $scope.showResult = true;
+                $scope.loading=false;
+            });
+        };
+        /**
+         * 帮助函数，获取缩放后的宽高
+         * @param width
+         * @param height
+         * @returns {{width: *, height: *}}
+         */
+        function getWH(width, height) {
+            var maxWidth = 600;
+            var maxHeight = 600;
+
+            if (width > maxWidth) {
+                height = (height * maxWidth) / width;
+                width = maxWidth;
+
+            }
+
+            if (height > maxHeight) {
+                width = (width * maxHeight) / height;
+                height = maxHeight;
+
+            }
+            console.log(width, height);
+            return {
+                width: width,
+                height: height
+            };
+        }
+
+        /**
+         * 帮助函数，终止挂起的分析请求
+         */
+        function abortPendingRequest() {
+            var pendingRequests = $http.pendingRequests;
+            for (var i = 0; i < pendingRequests.length; i++) {
+                var item = pendingRequests[i];
+                console.log(item);
+                if (item.defer && item.defer.resolve) {
+                    item.defer.resolve();
+                }
+            }
+        }
+
+        /**
+         * 帮助函数，修改图片大小
+         * @param file
+         * @returns {*}
+         */
+        function changeSize(file) {
+            var defer = $q.defer();
+            var MAX_HEIGHT = 100;
+            var image = new Image();
+            image.onload = function () {
+                var canvas = document.createElement('canvas');
+                if (image.height > MAX_HEIGHT) {
+                    image.width *= MAX_HEIGHT / image.height;
+                    image.height = MAX_HEIGHT;
+                }
+                var ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                canvas.width = image.width;
+                canvas.height = image.height;
+                ctx.drawImage(image, 0, 0, image.width, image.height);
+                defer.resolve(dataURLtoBlob(canvas.toDataURL(file.type)));
+            };
+            image.src = file.blobUrl;
+            return defer.promise;
+
+            function dataURLtoBlob(dataurl) {
+                var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new Blob([u8arr], {type: mime});
+            }
+        }
+
+
+    }]);
+    angular.module("console.imgTag").directive('swipe', function () {
+        return function (scope) {
+            if (scope.$last) {
+                setTimeout(function () {
+                    new Swiper('.swiper-container', {
+                        slidesPerView: 3,
+                        loop: true,
+                        paginationClickable: true,
+                        spaceBetween: 30
+                    });
+                }, 0);
+            }
+        };
+    });
+
+</script>
+</body>
+</html>

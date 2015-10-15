@@ -1,0 +1,28 @@
+@import "compass/reset";
+@import "compass/utilities/general/clearfix";
+@import "compass/css3";
+
+body {
+  background: #fbf8f4 url(http://css3lib.alloyteam.com/uilib/animation/CSS3TimedNotifications/images/bg.jpg) repeat;
+}
+
+.swiper-container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+  .progress {
+    font-size:12px;
+    line-height: 25px;
+    display: inline-block;;
+    height:25px;
+    background-color: #a5df41;
+    @include border-radius(8px);
+  }
+  .label{
+    height:50px;
+    color:black;
+    font-size:12px;
+    line-height:25px;
+  }
+

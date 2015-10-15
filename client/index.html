@@ -1,26 +1,33 @@
 ﻿<html lang="zh-cn">
 <head>
     <meta charset="utf-8">
+    <title>图像识别</title>
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/client/assets/css/index.css" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="/client/assets/css/index.css"/>
+    <script type="text/javascript">
+        var isMobile = !!navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i);
+        if (isMobile) {
+            location.href = "/m";
+        }
+    </script>
 </head>
 <body ng-app="console.imgTag">
 
-    <div ui-view></div>
+<div ui-view></div>
 
-    <script src="/client/assets/js/jquery.min.js"></script>
-    <script src="/client/assets/js/bootstrap.js"></script>
-    <script src="/client/assets/js/angular.js"></script>
-    <script src="/client/assets/js/angular-ui-router.min.js"></script>
-    <script src="/client/assets/js/angular-animate.js"></script>
+<script src="/client/assets/js/jquery.min.js"></script>
+<script src="/client/assets/js/bootstrap.js"></script>
+<script src="/client/assets/js/angular.js"></script>
+<script src="/client/assets/js/angular-ui-router.min.js"></script>
+<script src="/client/assets/js/angular-animate.js"></script>
 
-    <script src="/client/assets/js/ng-file-upload-shim.js"></script>
-    <script src="/client/assets/js/ng-file-upload.js"></script>
+<script src="/client/assets/js/ng-file-upload-shim.js"></script>
+<script src="/client/assets/js/ng-file-upload.js"></script>
 
-    <script src="/client/app/app.js"></script>
-    <script src="/client/app/app.router.js"></script>
-    <script src="/client/build/controllers.js"></script>
+<script src="/client/app/app.js"></script>
+<script src="/client/app/app.router.js"></script>
+<script src="/client/build/controllers.js"></script>
 
 </body>
 </html>

@@ -26,6 +26,11 @@ app.get('/', function (req, res) {
     res.render('index');
 });
 
+//set home page
+app.get('/m', function (req, res) {
+    res.render('mobile');
+});
+
 // error handlers
 // development error handler
 // will print stacktrace
